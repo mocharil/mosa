@@ -1,0 +1,94 @@
+{
+  "sources": [
+    {
+      "id": 1,
+      "title": "Perpres No. 82 Tahun 2018",
+      "description": "Tentang Jaminan Kesehatan",
+      "url": "https://peraturan.bpk.go.id/Home/Details/90471/perpres-no-82-tahun-2018",
+      "topics": ["jaminan kesehatan", "kepesertaan", "iuran", "manfaat"]
+    },
+    {
+      "id": 2,
+      "title": "Permenkes No. 28 Tahun 2014",
+      "description": "Tentang Pedoman Pelaksanaan Program JKN",
+      "url": "https://jdih.kemkes.go.id/",
+      "topics": ["prosedur", "pelayanan", "rujukan", "fktp", "fktl"]
+    },
+    {
+      "id": 3,
+      "title": "Perpres No. 19 Tahun 2016",
+      "description": "Tentang Perubahan Kedua atas Perpres No. 12 Tahun 2013",
+      "url": "https://peraturan.bpk.go.id/",
+      "topics": ["kepesertaan", "pendaftaran", "perubahan data"]
+    },
+    {
+      "id": 4,
+      "title": "SE BPJS Kesehatan No. 23 Tahun 2020",
+      "description": "Tentang Prosedur Klaim Rawat Inap",
+      "url": "https://bpjs-kesehatan.go.id/",
+      "topics": ["klaim", "rawat inap", "verifikasi", "pembayaran"]
+    },
+    {
+      "id": 5,
+      "title": "Permenkes No. 71 Tahun 2013",
+      "description": "Tentang Pelayanan Kesehatan pada JKN",
+      "url": "https://jdih.kemkes.go.id/",
+      "topics": ["pelayanan kesehatan", "standar", "kualitas", "akses"]
+    },
+    {
+      "id": 6,
+      "title": "FAQ BPJS Kesehatan",
+      "description": "Pertanyaan yang Sering Diajukan",
+      "url": "https://bpjs-kesehatan.go.id/bpjs/pages/detail/2014/4",
+      "topics": ["faq", "umum", "kepesertaan", "pelayanan", "iuran"]
+    }
+  ],
+  "emergency_contacts": [
+    {
+      "name": "Hotline Kesehatan Jiwa",
+      "number": "119 ext 8",
+      "description": "Layanan darurat kesehatan mental 24/7",
+      "available": "24/7"
+    },
+    {
+      "name": "BPJS Kesehatan Care Center",
+      "number": "1500-400",
+      "description": "Layanan informasi dan bantuan BPJS Kesehatan",
+      "available": "Senin-Jumat 08:00-17:00"
+    },
+    {
+      "name": "Halo Kemkes",
+      "number": "1500-567",
+      "description": "Layanan informasi kesehatan Kementerian Kesehatan",
+      "available": "24/7"
+    },
+    {
+      "name": "Sejiwa (Yayasan Kesehatan Jiwa)",
+      "number": "119 ext 8 atau WA 081-1-19-8119",
+      "description": "Konseling kesehatan jiwa gratis",
+      "available": "24/7"
+    }
+  ],
+  "common_jkn_questions": [
+    {
+      "question": "Bagaimana cara mendaftar JKN?",
+      "answer": "Pendaftaran JKN bisa dilakukan melalui: 1) Aplikasi Mobile JKN, 2) Website BPJS Kesehatan, 3) Kantor BPJS terdekat. Syarat: KTP, KK, dan email aktif.",
+      "source": "Perpres No. 82/2018"
+    },
+    {
+      "question": "Berapa iuran JKN per bulan?",
+      "answer": "Iuran tergantung kelas: Kelas I Rp 150.000, Kelas II Rp 100.000, Kelas III Rp 35.000 (PBI gratis dari pemerintah).",
+      "source": "Perpres No. 82/2018"
+    },
+    {
+      "question": "Bagaimana cara mendapatkan rujukan?",
+      "answer": "Datang ke FKTP (Puskesmas/Klinik) terlebih dahulu. Jika perlu perawatan lanjutan, FKTP akan memberikan surat rujukan ke Rumah Sakit.",
+      "source": "Permenkes No. 28/2014"
+    },
+    {
+      "question": "Apa yang tidak ditanggung JKN?",
+      "answer": "Tidak ditanggung: pelayanan kosmetik, general check-up, alat kontrasepsi, pengobatan alternatif, infertilitas, dan pelayanan di luar negeri.",
+      "source": "Perpres No. 82/2018"
+    }
+  ]
+}
