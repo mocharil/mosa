@@ -1,295 +1,182 @@
 # Deployment Guide - Voice JKN Agent
 
-## Persiapan Sebelum Deploy
+## Docker Deployment
 
-### 1. Dapatkan Gemini API Key
-- Kunjungi [Google AI Studio](https://makersuite.google.com/app/apikey)
-- Login dengan akun Google
-- Buat API key baru
-- Simpan API key dengan aman
+### Prerequisites
+- Docker installed (v20.10 or higher)
+- Docker Compose installed (v2.0 or higher)
 
-### 2. Test Lokal Terlebih Dahulu
+### Quick Start
+
+#### 1. Build Docker Image
 ```bash
-# Install dependencies
-npm install
-
-# Setup environment variables
-cp .env.example .env.local
-# Edit .env.local dan masukkan GEMINI_API_KEY
-
-# Run development server
-npm run dev
-
-# Buka http://localhost:3000 dan test semua fitur
+docker build -t voice-jkn-agent:latest .
 ```
 
-### 3. Build Production
+#### 2. Run with Docker
 ```bash
-npm run build
-npm start
+docker run -p 3000:3000 \
+  -e GEMINI_API_KEY=your_api_key_here \
+  voice-jkn-agent:latest
 ```
 
-## Deploy ke Vercel (Recommended)
-
-Vercel adalah platform deployment terbaik untuk Next.js dengan performa optimal.
-
-### Step-by-Step:
-
-1. **Push ke GitHub**
+#### 3. Run with Docker Compose
 ```bash
-git init
-git add .
-git commit -m "Initial commit - Voice JKN Agent"
-git branch -M main
-git remote add origin <your-github-repo-url>
-git push -u origin main
+docker-compose up -d
 ```
 
-2. **Import Project ke Vercel**
-- Kunjungi [vercel.com](https://vercel.com)
-- Klik "Import Project"
-- Pilih repository GitHub Anda
-- Klik "Import"
+### Environment Variables
 
-3. **Konfigurasi Environment Variables**
-Di Vercel dashboard, tambahkan:
-- `GEMINI_API_KEY` = your_actual_gemini_api_key
+Create a `.env.production` file with the following variables:
 
-4. **Deploy**
-- Klik "Deploy"
-- Tunggu beberapa menit
-- Aplikasi akan live di URL: `your-project.vercel.app`
+```env
+# Application
+NODE_ENV=production
+PORT=3000
 
-### Custom Domain (Opsional)
-1. Beli domain (misalnya di Niagahoster, Dewaweb, dll)
-2. Di Vercel, buka Settings → Domains
-3. Tambahkan custom domain
-4. Update DNS records sesuai instruksi Vercel
+# API Keys
+GEMINI_API_KEY=your_gemini_api_key
+GOOGLE_CLOUD_PROJECT=your_project_id
 
-## Deploy ke Netlify
-
-### Step-by-Step:
-
-1. **Build Configuration**
-Buat file `netlify.toml`:
-```toml
-[build]
-  command = "npm run build"
-  publish = ".next"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+# Optional
+NEXT_PUBLIC_APP_NAME=Voice JKN Agent
 ```
 
-2. **Deploy via Netlify CLI**
+### Build Arguments
+
+You can pass build arguments during the build process:
+
 ```bash
-npm install -g netlify-cli
-netlify login
-netlify init
-netlify deploy --prod
+docker build \
+  --build-arg NEXT_PUBLIC_APP_NAME="Custom App Name" \
+  -t voice-jkn-agent:latest .
 ```
 
-3. **Set Environment Variables**
+### Production Deployment
+
+#### Using Docker Compose with Environment File
+
+1. Create `.env.production` file with your environment variables
+2. Update `docker-compose.yml` to uncomment the `env_file` section
+3. Run:
 ```bash
-netlify env:set GEMINI_API_KEY your_api_key_here
+docker-compose --env-file .env.production up -d
 ```
 
-## Deploy ke Railway
-
-1. **Install Railway CLI**
+#### View Logs
 ```bash
-npm install -g @railway/cli
+# Docker
+docker logs -f voice-jkn-agent
+
+# Docker Compose
+docker-compose logs -f
 ```
 
-2. **Login & Deploy**
+#### Stop Container
 ```bash
-railway login
-railway init
-railway up
+# Docker
+docker stop voice-jkn-agent
+
+# Docker Compose
+docker-compose down
 ```
 
-3. **Set Environment Variables**
-Di Railway dashboard:
-- Variables → Add Variable
-- Key: `GEMINI_API_KEY`
-- Value: your API key
-
-## Deploy ke Cloud Provider
-
-### Google Cloud Run
-
-1. **Buat Dockerfile**
-```dockerfile
-FROM node:18-alpine
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install
-
-COPY . .
-RUN npm run build
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
-```
-
-2. **Build & Deploy**
+#### Restart Container
 ```bash
+# Docker
+docker restart voice-jkn-agent
+
+# Docker Compose
+docker-compose restart
+```
+
+### Health Check
+
+The application includes a health check endpoint. Access it at:
+```
+http://localhost:3000/api/health
+```
+
+### Multi-Stage Build Benefits
+
+The Dockerfile uses a multi-stage build process:
+1. **deps**: Installs production dependencies
+2. **builder**: Builds the Next.js application
+3. **runner**: Creates the final minimal image
+
+This results in:
+- Smaller image size (~200-300MB vs 1GB+)
+- Better security (minimal attack surface)
+- Faster deployment times
+
+### Troubleshooting
+
+#### Container doesn't start
+Check logs:
+```bash
+docker logs voice-jkn-agent
+```
+
+#### Port already in use
+Change the port mapping in `docker-compose.yml` or use different port:
+```bash
+docker run -p 8080:3000 voice-jkn-agent:latest
+```
+
+#### Build fails
+Clear Docker cache and rebuild:
+```bash
+docker build --no-cache -t voice-jkn-agent:latest .
+```
+
+### Security Notes
+
+1. Never commit `.env` files with sensitive data
+2. Use Docker secrets for production deployments
+3. The container runs as non-root user (nextjs:nodejs)
+4. Keep the base image updated regularly
+
+### Cloud Deployment
+
+#### Google Cloud Run
+```bash
+# Build and push to Google Container Registry
 gcloud builds submit --tag gcr.io/PROJECT_ID/voice-jkn-agent
+
+# Deploy to Cloud Run
 gcloud run deploy voice-jkn-agent \
   --image gcr.io/PROJECT_ID/voice-jkn-agent \
   --platform managed \
-  --region asia-southeast1 \
-  --allow-unauthenticated \
-  --set-env-vars GEMINI_API_KEY=your_api_key
+  --region asia-southeast2 \
+  --allow-unauthenticated
 ```
 
-### AWS Elastic Beanstalk
+#### AWS ECS / Fargate
+1. Push image to ECR
+2. Create task definition
+3. Create service with task definition
 
-1. **Install EB CLI**
+#### Azure Container Instances
 ```bash
-pip install awsebcli
+az container create \
+  --resource-group myResourceGroup \
+  --name voice-jkn-agent \
+  --image voice-jkn-agent:latest \
+  --dns-name-label voice-jkn-agent \
+  --ports 3000
 ```
 
-2. **Initialize & Deploy**
-```bash
-eb init -p node.js voice-jkn-agent
-eb create voice-jkn-agent-env
-eb setenv GEMINI_API_KEY=your_api_key
-eb deploy
-```
+### Monitoring
 
-## Post-Deployment Checklist
+Consider adding monitoring tools:
+- Prometheus for metrics
+- Grafana for visualization
+- Sentry for error tracking
+- New Relic or DataDog for APM
 
-### ✅ Testing
-- [ ] Test voice recognition di Chrome
-- [ ] Test voice recognition di Edge
-- [ ] Test Mode JKN - tanya pertanyaan umum
-- [ ] Test Mode Curhat - coba berbagai skenario
-- [ ] Test emergency button
-- [ ] Test conversation summary & export
-- [ ] Test di mobile device
-- [ ] Test dengan koneksi lambat
+### Scaling
 
-### ✅ Performance
-- [ ] Lighthouse score > 90
-- [ ] Time to First Byte < 200ms
-- [ ] First Contentful Paint < 1.5s
-- [ ] Largest Contentful Paint < 2.5s
-
-### ✅ Security
-- [ ] HTTPS enabled (otomatis di Vercel/Netlify)
-- [ ] Environment variables tidak exposed
-- [ ] CSP headers configured (opsional)
-- [ ] Rate limiting untuk API (opsional)
-
-### ✅ Monitoring
-- [ ] Setup error tracking (Sentry recommended)
-- [ ] Monitor API usage & costs
-- [ ] Setup uptime monitoring (UptimeRobot)
-
-## Troubleshooting
-
-### Speech Recognition Tidak Bekerja di Production
-**Solusi**: Pastikan HTTPS enabled. Web Speech API hanya bekerja di HTTPS atau localhost.
-
-### Gemini API Rate Limit Error
-**Solusi**:
-- Cek quota di Google AI Studio
-- Implementasi rate limiting di backend
-- Upgrade ke paid tier jika perlu
-
-### Build Failed di Vercel
-**Solusi**:
-1. Cek build logs
-2. Pastikan semua dependencies di `package.json`
-3. Test build lokal: `npm run build`
-4. Cek Node.js version compatibility
-
-### Mobile Performance Lambat
-**Solusi**:
-- Enable image optimization
-- Lazy load components
-- Reduce bundle size
-- Use CDN untuk assets
-
-## Monitoring & Analytics
-
-### Setup Sentry (Error Tracking)
-```bash
-npm install @sentry/nextjs
-npx @sentry/wizard@latest -i nextjs
-```
-
-### Setup Google Analytics
-Di `app/layout.tsx`, tambahkan:
-```tsx
-import Script from 'next/script';
-
-// Di dalam component
-<Script
-  src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
-  strategy="afterInteractive"
-/>
-```
-
-### Setup Vercel Analytics
-```bash
-npm install @vercel/analytics
-```
-
-Di `app/layout.tsx`:
-```tsx
-import { Analytics } from '@vercel/analytics/react';
-
-// Di return statement
-<Analytics />
-```
-
-## Biaya Estimasi
-
-### Free Tier (Development)
-- **Vercel**: Free untuk personal projects
-- **Gemini API**: 60 requests/minute gratis
-- **Domain**: ~Rp 100.000/tahun
-
-### Production (100 users/hari)
-- **Vercel Pro**: $20/bulan
-- **Gemini API**: ~$10-30/bulan (tergantung usage)
-- **Total**: ~Rp 600.000/bulan
-
-## Skalabilitas
-
-Untuk traffic tinggi:
-1. **Implement Caching**
-   - Redis untuk session
-   - CDN untuk static assets
-
-2. **Database untuk Riwayat**
-   - Supabase (gratis 500MB)
-   - Firebase Firestore
-
-3. **Load Balancing**
-   - Otomatis di Vercel
-   - Manual di cloud provider lain
-
-4. **Rate Limiting**
-   - Implementasi per-user rate limiting
-   - Prevent abuse
-
-## Backup & Recovery
-
-1. **Backup Code**: Always di GitHub
-2. **Backup Database**: Automatic di Supabase/Firebase
-3. **Environment Variables**: Simpan di password manager
-4. **Deployment Rollback**:
-   - Vercel: One-click rollback
-   - Railway: `railway rollback`
-
----
-
-**Support**: Untuk bantuan deployment, buka issue di GitHub atau email: support@yourapp.com
-
-**Security**: Report security issues ke: security@yourapp.com
+For horizontal scaling, use:
+- Kubernetes (K8s)
+- Docker Swarm
+- Cloud-native solutions (Cloud Run, ECS, AKS)

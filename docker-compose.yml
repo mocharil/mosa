@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  voice-jkn-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_APP_NAME: "Voice JKN Agent"
+    container_name: voice-jkn-agent
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # Add your environment variables here
+      # - GEMINI_API_KEY=${GEMINI_API_KEY}
+      # - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
+    # Uncomment if you need to use .env file
+    # env_file:
+    #   - .env.production
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # Uncomment if you need to mount volumes
+    # volumes:
+    #   - ./logs:/app/logs
