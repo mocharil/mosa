@@ -36,6 +36,20 @@ import {
 } from "lucide-react";
 import { cn } from "@/app/lib/utils";
 
+// Type definitions for emotion data
+interface EmotionResult {
+  emotion: string;
+  confidence: number;
+  features?: any;
+  scores?: any;
+}
+
+interface EmotionHistoryItem {
+  emotion: string;
+  confidence: number;
+  timestamp: Date;
+}
+
 export default function ChatPage() {
   const router = useRouter();
   const {
@@ -61,9 +75,9 @@ export default function ChatPage() {
   const [showAvatar, setShowAvatar] = useState(true);
   const [mouthOpenness, setMouthOpenness] = useState(0);
   const [currentAIText, setCurrentAIText] = useState("");
-  const [currentEmotion, setCurrentEmotion] = useState(null);
-  const [emotionHistory, setEmotionHistory] = useState([]);
-  const [emotionAnalyzer, setEmotionAnalyzer] = useState(null);
+  const [currentEmotion, setCurrentEmotion] = useState<EmotionResult | null>(null);
+  const [emotionHistory, setEmotionHistory] = useState<EmotionHistoryItem[]>([]);
+  const [emotionAnalyzer, setEmotionAnalyzer] = useState<VoiceEmotionAnalyzer | null>(null);
 
   const {
     transcript: liveTranscript,
@@ -129,7 +143,7 @@ export default function ChatPage() {
     if (!listening || !emotionAnalyzer) return;
 
     const intervalId = setInterval(() => {
-      const result = emotionAnalyzer.getCurrentEmotion();
+      const result = emotionAnalyzer.getCurrentEmotion() as EmotionResult;
 
       if (result && result.confidence > 0.5) {
         setCurrentEmotion(result);
@@ -204,7 +218,7 @@ export default function ChatPage() {
               lang: language,
               rate: 0.9,
               pitch: 1.0,
-              onMouthMove: (openness) => {
+              onMouthMove: (openness: number) => {
                 setMouthOpenness(openness);
               },
               onStart: () => {
@@ -215,13 +229,13 @@ export default function ChatPage() {
                 setMouthOpenness(0);
                 setTimeout(() => setCurrentAIText(''), 500);
               },
-              onError: (error) => {
+              onError: (error: any) => {
                 console.error("Speech error:", error);
                 setIsSpeaking(false);
                 setMouthOpenness(0);
                 setCurrentAIText('');
               }
-            });
+            } as any);
           } catch (error) {
             console.error("Speech error:", error);
             setIsSpeaking(false);
@@ -316,7 +330,7 @@ export default function ChatPage() {
               lang: language,
               rate: 0.9,
               pitch: 1.0,
-              onMouthMove: (openness) => {
+              onMouthMove: (openness: number) => {
                 setMouthOpenness(openness);
               },
               onStart: () => {
@@ -327,13 +341,13 @@ export default function ChatPage() {
                 setMouthOpenness(0);
                 setTimeout(() => setCurrentAIText(''), 500);
               },
-              onError: (error) => {
+              onError: (error: any) => {
                 console.error("Speech error:", error);
                 setIsSpeaking(false);
                 setMouthOpenness(0);
                 setCurrentAIText('');
               }
-            });
+            } as any);
           } catch (error) {
             console.error("Speech error:", error);
             setIsSpeaking(false);

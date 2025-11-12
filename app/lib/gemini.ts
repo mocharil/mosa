@@ -42,6 +42,7 @@ export interface Message {
   role: "user" | "assistant" | "system";
   content: string;
   timestamp: Date;
+  imageUrl?: string;
 }
 
 export interface UnifiedResponse {
