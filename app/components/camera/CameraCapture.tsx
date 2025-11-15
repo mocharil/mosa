@@ -123,9 +123,9 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black">
+    <div className="fixed inset-0 z-[9999] bg-black">
       {/* Header */}
-      <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-black/80 to-transparent p-4">
+      <div className="absolute top-0 left-0 right-0 z-[10] bg-gradient-to-b from-black/80 to-transparent p-4">
         <div className="flex items-center justify-between">
           <button
             onClick={onClose}
@@ -226,7 +226,7 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
       </div>
 
       {/* Bottom Controls */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/80 to-transparent p-6 pb-8">
+      <div className="absolute bottom-0 left-0 right-0 z-[10] bg-gradient-to-t from-black/80 to-transparent p-6 pb-8">
         {!capturedImage ? (
           /* Capture Button */
           <div className="flex items-center justify-center gap-8">

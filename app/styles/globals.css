@@ -33,22 +33,36 @@ body {
   }
 }
 
-/* Custom scrollbar */
+/* Modern Dark Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgba(17, 24, 39, 0.5);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
+  background: rgba(75, 85, 99, 0.8);
+  border-radius: 10px;
+  transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: rgba(107, 114, 128, 0.9);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(75, 85, 99, 0.8) rgba(17, 24, 39, 0.5);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
 /* Animation for audio visualizer */

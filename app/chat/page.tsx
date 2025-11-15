@@ -725,21 +725,21 @@ export default function ChatPage() {
 
   return (
     <div className="flex flex-col h-screen bg-black">
-      {/* Minimalist Header */}
-      <header className="bg-gradient-to-r from-primary-600 to-primary-500 border-b border-primary-700/50 shadow-lg backdrop-blur-xl">
-        <div className="container mx-auto px-4 py-3">
+      {/* Modern Dark Header with Glassmorphism */}
+      <header className="sticky top-0 z-50 bg-gradient-to-br from-gray-900/95 via-purple-900/30 to-gray-900/95 border-b border-gray-700/30 shadow-2xl backdrop-blur-xl backdrop-saturate-150">
+        <div className="container mx-auto px-4 py-3.5">
           <div className="flex items-center justify-between">
             {/* Left: Back button + Logo */}
             <div className="flex items-center gap-3">
               <button
                 onClick={() => router.push("/")}
-                className="p-2 hover:bg-white/10 rounded-xl transition-all active:scale-95"
+                className="p-2 hover:bg-white/5 rounded-xl transition-all duration-200 active:scale-95 group"
                 aria-label="Back to home"
               >
-                <ArrowLeft className="h-5 w-5 text-white" />
+                <ArrowLeft className="h-5 w-5 text-gray-300 group-hover:text-white transition-colors duration-200" />
               </button>
               <div className="flex items-center gap-2.5">
-                <div className="h-10 w-10 rounded-xl bg-white/95 flex items-center justify-center shadow-lg p-1.5">
+                <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-primary-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/20 p-1.5 ring-2 ring-purple-500/30 hover:ring-purple-400/50 transition-all duration-300">
                   <Image
                     src="/mosa_logo-removebg-preview.png"
                     alt="MOSA Logo"
@@ -750,10 +750,10 @@ export default function ChatPage() {
                   />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-white tracking-tight">
+                  <h1 className="text-lg font-bold text-white tracking-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text">
                     MOSA
                   </h1>
-                  <p className="text-[10px] text-primary-50/80 leading-tight">
+                  <p className="text-[10px] text-gray-400 leading-tight">
                     AI Assistant
                   </p>
                 </div>
@@ -763,13 +763,13 @@ export default function ChatPage() {
             {/* Right: Hamburger menu */}
             <button
               onClick={() => setShowMenu(true)}
-              className="p-2.5 hover:bg-white/10 rounded-xl transition-all active:scale-95 relative group"
+              className="p-2.5 hover:bg-white/5 rounded-xl transition-all duration-200 active:scale-95 relative group"
               aria-label="Open menu"
             >
-              <Menu className="h-6 w-6 text-white" />
+              <Menu className="h-6 w-6 text-gray-300 group-hover:text-white transition-colors duration-200" />
               {/* Notification dot if there are messages */}
               {messages.length > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-accent-400 rounded-full ring-2 ring-primary-500 animate-pulse" />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-purple-500 rounded-full ring-2 ring-purple-500/30 animate-pulse shadow-lg shadow-purple-500/50" />
               )}
             </button>
           </div>
@@ -835,22 +835,28 @@ export default function ChatPage() {
         )}
       </div>
 
-      {/* Voice Mode Overlay - Modern Design */}
+      {/* Voice Mode Overlay - Modern Dark Design */}
       {isVoiceMode && (
-        <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-900 z-40 flex flex-col items-center justify-between p-8">
+        <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900 z-40 flex flex-col items-center justify-between p-8">
+          {/* Animated Background Effects */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          </div>
+
           {/* Header */}
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-md relative z-10">
             <div className="flex items-center justify-between mb-8">
               <button
                 onClick={handleBackFromVoice}
-                className="p-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all active:scale-95"
+                className="p-3 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all active:scale-95 border border-white/10"
               >
-                <ArrowLeft className="w-5 h-5 text-white" />
+                <ArrowLeft className="w-5 h-5 text-gray-300" />
               </button>
               <h2 className="text-white text-lg font-medium">Voice Assistant</h2>
               <div className="w-11"></div>
             </div>
-            <p className="text-white/60 text-center text-sm">
+            <p className="text-gray-400 text-center text-sm">
               {isProcessing
                 ? "Processing..."
                 : isSpeaking
@@ -867,10 +873,10 @@ export default function ChatPage() {
           </div>
 
           {/* Content Display */}
-          <div className="w-full max-w-md mb-8">
+          <div className="w-full max-w-md mb-8 relative z-10">
             {/* User Transcript - only show when listening */}
             {transcript && listening && (
-              <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20">
+              <div className="bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/50 shadow-2xl">
                 <p className="text-white text-base leading-relaxed text-center">
                   {transcript}
                 </p>
@@ -879,32 +885,33 @@ export default function ChatPage() {
 
             {/* Processing indicator */}
             {isProcessing && !isSpeaking && !listening && (
-              <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20">
+              <div className="bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/50 shadow-2xl">
                 <div className="flex items-center justify-center gap-3">
                   <div className="flex gap-1.5">
                     <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce"></div>
                     <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
                     <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                   </div>
-                  <span className="text-white/80 text-sm">Thinking...</span>
+                  <span className="text-gray-300 text-sm">Thinking...</span>
                 </div>
               </div>
             )}
           </div>
 
           {/* Bottom Controls */}
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-md relative z-10">
             {/* Audio Visualizer Line - only show when active */}
             {(listening || isSpeaking) && (
               <div className="flex items-center justify-center gap-1 mb-6 h-12">
                 {[...Array(30)].map((_, i) => (
                   <div
                     key={i}
-                    className="w-1 bg-white/30 rounded-full transition-all"
+                    className="w-1 bg-gradient-to-t from-primary-400 to-purple-400 rounded-full transition-all"
                     style={{
                       height: `${20 + Math.sin((Date.now() / 100) + i) * 15}px`,
                       animation: `wave 0.8s ease-in-out infinite`,
-                      animationDelay: `${i * 0.05}s`
+                      animationDelay: `${i * 0.05}s`,
+                      opacity: 0.6
                     }}
                   />
                 ))}
@@ -920,10 +927,10 @@ export default function ChatPage() {
                     resetTranscript();
                     resetSpeechTranscript();
                   }}
-                  className="p-4 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all active:scale-95"
+                  className="p-4 rounded-2xl bg-gray-800/80 hover:bg-gray-700/80 backdrop-blur-sm transition-all active:scale-95 border border-gray-700/50"
                   title="Reset transcript"
                 >
-                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
                 </button>
@@ -936,15 +943,15 @@ export default function ChatPage() {
                 className={cn(
                   "relative p-8 rounded-full transition-all shadow-2xl disabled:opacity-50",
                   listening
-                    ? "bg-gradient-to-br from-red-600 to-pink-600 hover:scale-105 active:scale-95"
-                    : "bg-gradient-to-br from-purple-600 to-pink-600 hover:scale-105 active:scale-95"
+                    ? "bg-gradient-to-br from-red-500 to-pink-500 hover:scale-105 active:scale-95 shadow-red-500/30"
+                    : "bg-gradient-to-br from-primary-500 to-purple-500 hover:scale-105 active:scale-95 shadow-primary-500/30"
                 )}
               >
                 {/* Pulsing rings - only when listening */}
                 {listening && (
                   <>
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-red-600 to-pink-600 opacity-30 animate-ping"></div>
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-red-600 to-pink-600 opacity-20 animate-pulse"></div>
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-red-500 to-pink-500 opacity-30 animate-ping"></div>
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-red-500 to-pink-500 opacity-20 animate-pulse"></div>
                   </>
                 )}
 
@@ -958,10 +965,10 @@ export default function ChatPage() {
               {isSpeaking && (
                 <button
                   onClick={handleStopSpeaking}
-                  className="p-4 rounded-2xl bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 backdrop-blur-sm transition-all active:scale-95"
+                  className="p-4 rounded-2xl bg-gray-800/80 hover:bg-gray-700/80 border border-gray-700/50 backdrop-blur-sm transition-all active:scale-95"
                   title="Stop AI"
                 >
-                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M6 6h12v12H6z"/>
                   </svg>
                 </button>
@@ -969,7 +976,7 @@ export default function ChatPage() {
             </div>
 
             {/* Helper text */}
-            <p className="text-white/40 text-xs text-center mt-4">
+            <p className="text-gray-500 text-xs text-center mt-4">
               {listening
                 ? "Tap mic to send message"
                 : isSpeaking
@@ -981,7 +988,7 @@ export default function ChatPage() {
       )}
 
       {/* Input area - Fixed at bottom */}
-      <div className="border-t border-gray-800 bg-surface-dark">
+      <div className="border-t border-gray-800 bg-surface-dark relative z-10">
         <div className="container mx-auto px-4 py-3 max-w-4xl safe-area-bottom">
           {/* Unified Input */}
           <UnifiedInput

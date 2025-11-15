@@ -61,7 +61,9 @@ export default function ChatContainer({ messages, isProcessing = false }: ChatCo
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4 overflow-y-auto h-full">
+    <div className="flex flex-col gap-4 p-4 overflow-y-auto h-full scroll-smooth
+      scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900/50
+      hover:scrollbar-thumb-gray-600 scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
       {messages.map((message, index) => (
         <ChatBubble
           key={index}

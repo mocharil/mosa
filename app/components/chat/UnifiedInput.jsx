@@ -235,7 +235,7 @@ export default function UnifiedInput({
 
             {/* Attachment popup menu */}
             {showAttachMenu && (
-              <div className="absolute bottom-full left-0 mb-2 bg-gradient-to-br from-gray-900 to-black border border-white/20 rounded-xl shadow-2xl overflow-hidden animate-slide-up min-w-[160px]">
+              <div className="absolute bottom-full left-0 mb-2 bg-gradient-to-br from-gray-900 to-black border border-white/20 rounded-xl shadow-2xl overflow-hidden animate-slide-up min-w-[160px] z-[100]">
                 <button
                   type="button"
                   onClick={() => {
